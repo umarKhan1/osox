@@ -9,6 +9,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.13.0"
+  aug_validateform:
+    dependency: "direct main"
+    description:
+      name: aug_validateform
+      sha256: "4bab9faefea1515ca5dddfed68eec30702353406abb9eb4ffc6547d3470d2d13"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1-dev.6"
+  aug_validateform_annotations:
+    dependency: transitive
+    description:
+      name: aug_validateform_annotations
+      sha256: "17bd7e6ae2986936063d65fc7293b56ec52ad3fa8d0e09a203448d3afcc5e1e2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1-dev.2"
   bloc:
     dependency: transitive
     description:
@@ -57,6 +73,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
+  equatable:
+    dependency: "direct main"
+    description:
+      name: equatable
+      sha256: "3e0141505477fd8ad55d6eb4e7776d3fe8430be8e497ccb1521370c3f21a3e2b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.8"
   fake_async:
     dependency: transitive
     description:
@@ -104,6 +128,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  font_awesome_flutter:
+    dependency: "direct main"
+    description:
+      name: font_awesome_flutter
+      sha256: b9011df3a1fa02993630b8fb83526368cf2206a711259830325bab2f1d2a4eb0
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.12.0"
   get_it:
     dependency: "direct main"
     description:
@@ -287,4 +319,4 @@ packages:
     version: "15.0.2"
 sdks:
   dart: ">=3.10.4 <4.0.0"
-  flutter: ">=3.18.0-18.0.pre.54"
+  flutter: ">=3.27.0"
