@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:osox/core/constants/app_colors.dart';
-import 'package:osox/features/posts/presentation/cubit/media_picker_state.dart';
 
 class MediaTypeTab extends StatelessWidget {
   const MediaTypeTab({
