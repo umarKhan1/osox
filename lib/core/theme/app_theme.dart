@@ -5,9 +5,18 @@ class AppTheme {
   static ThemeData get light {
     return ThemeData(
       useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: AppColors.lightPrimary,
+      brightness: Brightness.light,
+      primaryColor: AppColors.lightPrimary,
+      scaffoldBackgroundColor: Colors.white,
+      colorScheme: const ColorScheme.light(
         primary: AppColors.lightPrimary,
+        secondary: AppColors.lightPrimary,
+        error: Colors.red,
+      ),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
       ),
     );
   }
@@ -15,10 +24,19 @@ class AppTheme {
   static ThemeData get dark {
     return ThemeData(
       useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: AppColors.darkPrimary,
+      brightness: Brightness.dark,
+      primaryColor: AppColors.darkPrimary,
+      scaffoldBackgroundColor: Colors.black,
+      colorScheme: ColorScheme.dark(
         primary: AppColors.darkPrimary,
-        brightness: Brightness.dark,
+        secondary: AppColors.darkPrimary,
+        surface: Colors.grey[900]!,
+        error: Colors.red,
+      ),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+        elevation: 0,
       ),
     );
   }

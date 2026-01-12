@@ -25,4 +25,8 @@ class AppStrings {
   static const String confirmPasswordHint = 're-enter your password';
   static const String alreadyHaveAccount = 'Already have an account? ';
   static const String createAccount = 'Create Account';
+  static const String search = 'Search';
+  static const String sendMessage = 'Send Message';
+  static const String live = 'LIVE';
+  static const String yourStory = 'Your Story';
 }

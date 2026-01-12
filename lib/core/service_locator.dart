@@ -1,7 +1,9 @@
 import 'package:get_it/get_it.dart';
+import 'package:osox/features/posts/data/repositories/post_repository.dart';
 
-final sl = GetIt.instance;
+final getIt = GetIt.instance;
 
 Future<void> initServiceLocator() async {
-  // Add repositories, cubits, services here
+  // Repositories
+  getIt.registerLazySingleton(PostRepository.new);
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:osox/features/auth/presentation/cubit/sign_up_cubit.dart';
 import 'package:osox/features/auth/presentation/cubit/sign_up_state.dart';
 import 'package:osox/features/auth/presentation/view/widgets/sign_up_footer.dart';
@@ -19,6 +20,7 @@ class SignUpScreen extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Account Created Successfully!')),
             );
+            context.go('/home');
           } else if (state is SignUpFailure) {
             ScaffoldMessenger.of(
               context,

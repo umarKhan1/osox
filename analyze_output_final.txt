@@ -1,0 +1,6 @@
+Analyzing osox...                                               
+
+warning • The value of the local variable 'mockViewers' isn't used • lib/features/home/data/repositories/home_repository.dart:8:11 • unused_local_variable
+   info • The value of the argument is redundant because it matches the default value • lib/features/home/presentation/view/widgets/stories_section.dart:29:26 • avoid_redundant_argument_values
+
+2 issues found. (ran in 1.4s)

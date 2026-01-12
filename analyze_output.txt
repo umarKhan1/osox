@@ -1,2 +1,17 @@
 Analyzing osox...                                               
-No issues found! (ran in 1.4s)
+
+   info • Use 'const' with the constructor to improve performance • lib/features/home/data/repositories/home_repository.dart:54:7 • prefer_const_constructors
+   info • Use 'const' literals as arguments to constructors of '@immutable' classes • lib/features/home/data/repositories/home_repository.dart:61:18 • prefer_const_literals_to_create_immutables
+   info • Use 'const' with the constructor to improve performance • lib/features/home/data/repositories/home_repository.dart:71:7 • prefer_const_constructors
+   info • Use 'const' literals as arguments to constructors of '@immutable' classes • lib/features/home/data/repositories/home_repository.dart:78:18 • prefer_const_literals_to_create_immutables
+   info • Use 'const' with the constructor to improve performance • lib/features/home/data/repositories/home_repository.dart:87:7 • prefer_const_constructors
+   info • Use 'const' literals as arguments to constructors of '@immutable' classes • lib/features/home/data/repositories/home_repository.dart:94:18 • prefer_const_literals_to_create_immutables
+   info • 'bool' parameters should be named parameters • lib/features/home/presentation/cubit/story_view_cubit.dart:23:30 • avoid_positional_boolean_parameters
+   info • Required named parameters should be before optional named parameters • lib/features/home/presentation/view/story_view_screen.dart:12:51 • always_put_required_named_parameters_first
+   info • Unnecessary duplication of receiver • lib/features/home/presentation/view/story_view_screen.dart:42:5 • cascade_invocations
+   info • Unnecessary duplication of receiver • lib/features/home/presentation/view/story_view_screen.dart:43:5 • cascade_invocations
+   info • The value of the argument is redundant because it matches the default value • lib/features/home/presentation/view/widgets/stories_section.dart:29:26 • avoid_redundant_argument_values
+   info • Required named parameters should be before optional named parameters • lib/features/home/presentation/view/widgets/story_circle.dart:9:47 • always_put_required_named_parameters_first
+   info • Required named parameters should be before optional named parameters • lib/features/home/presentation/view/widgets/story_viewer_sheet.dart:8:52 • always_put_required_named_parameters_first
+
+13 issues found. (ran in 1.5s)

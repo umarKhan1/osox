@@ -1,0 +1,6 @@
+class ApiKeys {
+  // Google Maps API Key
+  // Get your key from: https://console.cloud.google.com/
+  // IMPORTANT: This file is gitignored - do not commit your actual API key
+  static const String googleMapsApiKey = 'YOUR_API_KEY_HERE';
+}
