@@ -3,16 +3,21 @@ import 'package:osox/features/home/data/repositories/home_repository.dart';
 import 'package:osox/features/home/domain/models/story_model.dart';
 import 'package:osox/features/home/presentation/cubit/home_state.dart';
 
+import 'package:osox/features/posts/data/repositories/post_repository.dart';
+
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit(this._repository) : super(const HomeInitial());
+  HomeCubit(this._repository, this._postRepository)
+    : super(const HomeInitial());
 
   final HomeRepository _repository;
+  final PostRepository _postRepository;
 
   Future<void> loadDashboard() async {
     emit(const HomeLoading());
     try {
       final stories = await _repository.getStories();
-      emit(HomeLoaded(stories: stories));
+      final posts = await _postRepository.getFeedPosts();
+      emit(HomeLoaded(stories: stories, posts: posts));
     } catch (e) {
       emit(HomeError(e.toString()));
     }

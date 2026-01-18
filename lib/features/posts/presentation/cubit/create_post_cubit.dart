@@ -60,9 +60,9 @@ class CreatePostCubit extends Cubit<CreatePostState> {
       );
 
       await _repository.createPost(post);
-      emit(CreatePostSuccess());
+      if (!isClosed) emit(CreatePostSuccess());
     } catch (e) {
-      emit(CreatePostError(e.toString()));
+      if (!isClosed) emit(CreatePostError(e.toString()));
     }
   }
 }

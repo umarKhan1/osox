@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:osox/features/home/domain/models/story_model.dart';
 
+import 'package:osox/features/posts/domain/models/post_model.dart';
+
 abstract class HomeState extends Equatable {
   const HomeState();
 
@@ -17,12 +19,13 @@ class HomeLoading extends HomeState {
 }
 
 class HomeLoaded extends HomeState {
-  const HomeLoaded({required this.stories});
+  const HomeLoaded({required this.stories, required this.posts});
 
   final List<UserStoriesModel> stories;
+  final List<PostModel> posts;
 
   @override
-  List<Object?> get props => [stories];
+  List<Object?> get props => [stories, posts];
 }
 
 class HomeError extends HomeState {

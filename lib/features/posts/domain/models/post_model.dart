@@ -13,6 +13,8 @@ class PostModel extends Equatable {
     this.location,
     this.likes = 0,
     this.comments = 0,
+    this.isLiked = false,
+    this.isBookmarked = false,
   });
 
   final String id;
@@ -25,6 +27,25 @@ class PostModel extends Equatable {
   final DateTime createdAt;
   final int likes;
   final int comments;
+  final bool isLiked;
+  final bool isBookmarked;
+
+  PostModel copyWith({int? likes, bool? isLiked, bool? isBookmarked}) {
+    return PostModel(
+      id: id,
+      userId: userId,
+      userName: userName,
+      userProfileUrl: userProfileUrl,
+      mediaPaths: mediaPaths,
+      caption: caption,
+      createdAt: createdAt,
+      location: location,
+      likes: likes ?? this.likes,
+      comments: comments,
+      isLiked: isLiked ?? this.isLiked,
+      isBookmarked: isBookmarked ?? this.isBookmarked,
+    );
+  }
 
   @override
   List<Object?> get props => [
@@ -38,5 +59,7 @@ class PostModel extends Equatable {
     createdAt,
     likes,
     comments,
+    isLiked,
+    isBookmarked,
   ];
 }
