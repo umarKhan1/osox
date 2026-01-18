@@ -4,9 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:osox/features/posts/domain/models/post_model.dart';
 
 class PostMediaCarousel extends StatefulWidget {
-  final PostModel post;
+  const PostMediaCarousel({required this.post, super.key});
 
-  const PostMediaCarousel({super.key, required this.post});
+  final PostModel post;
 
   @override
   State<PostMediaCarousel> createState() => _PostMediaCarouselState();
@@ -90,14 +90,14 @@ class _PostMediaCarouselState extends State<PostMediaCarousel> {
 }
 
 class PostPageIndicator extends StatelessWidget {
-  final int count;
-  final int currentIndex;
-
   const PostPageIndicator({
-    super.key,
     required this.count,
     required this.currentIndex,
+    super.key,
   });
+
+  final int count;
+  final int currentIndex;
 
   @override
   Widget build(BuildContext context) {

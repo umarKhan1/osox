@@ -121,14 +121,8 @@ class _SearchScreenState extends State<SearchScreen> {
     // 0, 1, 2, 3, 4, 5...
     // We want some to be tall or standard to create mosaic look
     // This is a simplified version of the Instagram pattern
-    final pattern = <double>[
-      1.0,
-      1.0,
-      0.5,
-      1.0,
-      1.0,
-      1.0,
-    ]; // 0.5 is tall (2 rows)
+    final pattern = <double>[1, 1, 0.5, 1, 1, 1];
+    // 0.5 is tall (2 rows)
     return pattern[index % pattern.length];
   }
 }

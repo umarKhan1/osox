@@ -1,13 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:osox/features/posts/domain/models/post_model.dart';
 import 'package:intl/intl.dart';
+import 'package:osox/features/posts/domain/models/post_model.dart';
 
 class PostContentViewer extends StatefulWidget {
-  final PostModel post;
+  const PostContentViewer({required this.post, super.key});
 
-  const PostContentViewer({super.key, required this.post});
+  final PostModel post;
 
   @override
   State<PostContentViewer> createState() => _PostContentViewerState();

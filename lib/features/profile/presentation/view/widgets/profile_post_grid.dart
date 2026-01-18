@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:osox/features/posts/domain/models/post_model.dart';
 import 'package:osox/features/search/presentation/view/widgets/explore_tile.dart';
-import 'package:go_router/go_router.dart';
 
 class ProfilePostGrid extends StatelessWidget {
   const ProfilePostGrid({required this.posts, super.key});

@@ -1,5 +1,5 @@
-import 'package:osox/features/posts/domain/models/post_model.dart';
 import 'package:osox/features/posts/domain/models/location_model.dart';
+import 'package:osox/features/posts/domain/models/post_model.dart';
 
 class PostRepository {
   final List<PostModel> _userPosts = [];

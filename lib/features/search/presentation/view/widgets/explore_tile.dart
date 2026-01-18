@@ -1,7 +1,8 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:osox/features/posts/domain/models/post_model.dart';
-import 'dart:io';
 
 class ExploreTile extends StatelessWidget {
   const ExploreTile({required this.post, required this.onTap, super.key});

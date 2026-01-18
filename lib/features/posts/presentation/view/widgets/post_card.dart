@@ -6,9 +6,9 @@ import 'package:osox/features/posts/presentation/view/widgets/post_header.dart';
 import 'package:osox/features/posts/presentation/view/widgets/post_media_carousel.dart';
 
 class PostCard extends StatefulWidget {
-  final PostModel post;
+  const PostCard({required this.post, super.key});
 
-  const PostCard({super.key, required this.post});
+  final PostModel post;
 
   @override
   State<PostCard> createState() => _PostCardState();

@@ -119,7 +119,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           builder: (context, state) {
             if (state is CreatePostSubmitting) {
               return const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                padding: EdgeInsets.symmetric(horizontal: 16),
                 child: SizedBox(
                   width: 20,
                   height: 20,

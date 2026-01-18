@@ -85,7 +85,7 @@ class AppRouter {
       GoRoute(
         path: '/post-detail',
         builder: (context, state) {
-          final post = state.extra as PostModel;
+          final post = state.extra! as PostModel;
           return PostDetailScreen(post: post);
         },
       ),
