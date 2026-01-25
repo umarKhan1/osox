@@ -55,6 +55,7 @@ class ConversationTile extends StatelessWidget {
         ),
       ),
       trailing: Column(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -64,7 +65,7 @@ class ConversationTile extends StatelessWidget {
           ),
           if (conversation.unreadCount > 0)
             Container(
-              margin: EdgeInsets.only(top: 4.h),
+              margin: EdgeInsets.only(top: 1.h),
               padding: EdgeInsets.all(6.r),
               decoration: BoxDecoration(
                 color: theme.primaryColor,
@@ -95,5 +96,3 @@ class ConversationTile extends StatelessWidget {
     }
   }
 }
-
-enum BoxType { circle } // Small fix for Container decoration

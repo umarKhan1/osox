@@ -199,7 +199,12 @@ class _StoryViewScreenState extends State<StoryViewScreen>
                 ),
 
                 // Story Bottom Bar
-                const StoryBottomBar(),
+                const Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: StoryBottomBar(),
+                ),
               ],
             ),
           ),
@@ -210,29 +215,27 @@ class _StoryViewScreenState extends State<StoryViewScreen>
 
   Widget _buildStoryContent(StoryModel story) {
     if (story.type == StoryType.video && _chewieController != null) {
-      return Center(
-        child: AspectRatio(
-          aspectRatio: 9 / 16,
-          child: Chewie(controller: _chewieController!),
+      return SizedBox.expand(
+        child: FittedBox(
+          fit: BoxFit.cover,
+          clipBehavior: Clip.hardEdge,
+          child: SizedBox(
+            width: _videoPlayerController!.value.size.width,
+            height: _videoPlayerController!.value.size.height,
+            child: Chewie(controller: _chewieController!),
+          ),
         ),
       );
     }
 
     final isLocalFile = story.contentUrl.startsWith('/');
 
-    return Center(
+    return SizedBox.expand(
       child: isLocalFile
-          ? Image.file(
-              File(story.contentUrl),
-              fit: BoxFit.contain,
-              width: double.infinity,
-              height: double.infinity,
-            )
+          ? Image.file(File(story.contentUrl), fit: BoxFit.cover)
           : CachedNetworkImage(
               imageUrl: story.contentUrl,
-              fit: BoxFit.contain,
-              width: double.infinity,
-              height: double.infinity,
+              fit: BoxFit.cover,
               placeholder: (context, url) => Shimmer.fromColors(
                 baseColor: Colors.grey[800]!,
                 highlightColor: Colors.grey[700]!,
