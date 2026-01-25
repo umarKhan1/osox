@@ -10,6 +10,7 @@ import 'package:osox/features/home/presentation/cubit/home_cubit.dart';
 import 'package:osox/features/home/presentation/cubit/story_view_cubit.dart';
 import 'package:osox/features/home/presentation/cubit/story_view_state.dart';
 import 'package:osox/features/home/presentation/view/widgets/story_bottom_bar.dart';
+import 'package:osox/features/home/presentation/view/widgets/story_management_sheet.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:video_player/video_player.dart';
@@ -128,6 +129,27 @@ class _StoryViewScreenState extends State<StoryViewScreen>
     _onStorySegmentComplete();
   }
 
+  Future<void> _showManagementSheet(StoryModel story) async {
+    _progressController.stop();
+    _chewieController?.pause();
+
+    final deleted = await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => StoryManagementSheet(story: story),
+    );
+
+    if (mounted) {
+      if (deleted == true) {
+        Navigator.of(context).pop();
+      } else {
+        _progressController.forward();
+        _chewieController?.play();
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<StoryViewCubit, StoryViewState>(
@@ -137,6 +159,18 @@ class _StoryViewScreenState extends State<StoryViewScreen>
         return Scaffold(
           backgroundColor: Colors.black,
           body: GestureDetector(
+            onVerticalDragEnd: (details) {
+              if ((details.primaryVelocity ?? 0) < -500) {
+                // Swipe Up
+                final currentStory =
+                    widget.userStory.stories[state.currentIndex];
+                final currentUserId =
+                    Supabase.instance.client.auth.currentUser?.id;
+                if (currentStory.userId == currentUserId) {
+                  _showManagementSheet(currentStory);
+                }
+              }
+            },
             onTapDown: (details) {
               final screenWidth = MediaQuery.of(context).size.width;
               if (details.globalPosition.dx < screenWidth / 2) {
@@ -199,11 +233,42 @@ class _StoryViewScreenState extends State<StoryViewScreen>
                 ),
 
                 // Story Bottom Bar
-                const Positioned(
+                Positioned(
                   bottom: 0,
                   left: 0,
                   right: 0,
-                  child: StoryBottomBar(),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Viewer indicator for owner
+                      if (story.userId ==
+                          Supabase.instance.client.auth.currentUser?.id)
+                        GestureDetector(
+                          onTap: () => _showManagementSheet(story),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 8.h),
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.keyboard_arrow_up,
+                                  color: Colors.white,
+                                  size: 24.sp,
+                                ),
+                                Text(
+                                  'Viewers',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      const StoryBottomBar(),
+                    ],
+                  ),
                 ),
               ],
             ),
