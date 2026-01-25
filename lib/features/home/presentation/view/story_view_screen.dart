@@ -141,7 +141,7 @@ class _StoryViewScreenState extends State<StoryViewScreen>
     );
 
     if (mounted) {
-      if (deleted == true) {
+      if (deleted ?? false) {
         Navigator.of(context).pop();
       } else {
         _progressController.forward();
