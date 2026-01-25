@@ -172,10 +172,12 @@ class _StoryViewScreenState extends State<StoryViewScreen>
                   Supabase.instance.client.auth.currentUser?.id;
 
               debugPrint(
-                'DEBUG: Swipe End - Velocity: $velocity, Distance: $_dragDistance',
+                'DEBUG: Swipe End - Velocity: $velocity, '
+                'Distance: $_dragDistance',
               );
               debugPrint(
-                'DEBUG: Ownership Check - Story User: ${currentStory.userId}, Current User: $currentUserId',
+                'DEBUG: Ownership Check - Story User: ${currentStory.userId}, '
+                'Current User: $currentUserId',
               );
 
               if (velocity < -200 || _dragDistance > 80) {
