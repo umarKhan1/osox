@@ -159,8 +159,10 @@ class _StoryViewScreenState extends State<StoryViewScreen>
         return Scaffold(
           backgroundColor: Colors.black,
           body: GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onVerticalDragEnd: (details) {
-              if ((details.primaryVelocity ?? 0) < -500) {
+              final velocity = details.primaryVelocity ?? 0;
+              if (velocity < -200) {
                 // Swipe Up
                 final currentStory =
                     widget.userStory.stories[state.currentIndex];
@@ -171,7 +173,7 @@ class _StoryViewScreenState extends State<StoryViewScreen>
                 }
               }
             },
-            onTapDown: (details) {
+            onTapUp: (details) {
               final screenWidth = MediaQuery.of(context).size.width;
               if (details.globalPosition.dx < screenWidth / 2) {
                 _onTapLeft();
