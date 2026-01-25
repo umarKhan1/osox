@@ -110,10 +110,10 @@ class _StoryViewerSheetState extends State<StoryViewerSheet> {
                                   widget.story.id,
                                 );
                                 Navigator.pop(modalContext); // Close dialog
-                                Navigator.pop(context); // Close sheet
                                 Navigator.pop(
                                   context,
-                                ); // Close Story View Screen
+                                  true,
+                                ); // Close sheet with true
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Theme.of(context).primaryColor,

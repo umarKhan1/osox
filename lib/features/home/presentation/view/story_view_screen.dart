@@ -10,7 +10,7 @@ import 'package:osox/features/home/presentation/cubit/home_cubit.dart';
 import 'package:osox/features/home/presentation/cubit/story_view_cubit.dart';
 import 'package:osox/features/home/presentation/cubit/story_view_state.dart';
 import 'package:osox/features/home/presentation/view/widgets/story_bottom_bar.dart';
-import 'package:osox/features/home/presentation/view/widgets/story_management_sheet.dart';
+import 'package:osox/features/home/presentation/view/widgets/story_viewer_sheet.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:video_player/video_player.dart';
@@ -137,7 +137,7 @@ class _StoryViewScreenState extends State<StoryViewScreen>
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => StoryManagementSheet(story: story),
+      builder: (context) => StoryViewerSheet(story: story),
     );
 
     if (mounted) {
