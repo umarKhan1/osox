@@ -6,6 +6,49 @@ This document provides a comprehensive overview of the OSOX social application, 
 
 OSOX is a modern social media platform built with Flutter and Supabase. It offers a rich user experience featuring real-time communication, media sharing, and immersive story viewing. The application is designed with scalability and performance in mind, utilizing a robust feature-driven architecture.
 
+## Getting Started
+
+To run this project locally, follow these steps:
+
+### 1. Prerequisites
+- Flutter SDK (latest stable version)
+- A Supabase project
+- A Google Maps API key
+
+### 2. Environment Setup
+Create a `.env` file in the root directory by copying the `.env.example` file:
+```bash
+cp .env.example .env
+```
+Open the `.env` file and replace the placeholders with your actual Supabase URL and Anon Key:
+```
+SUPABASE_URL=your_actual_supabase_url
+SUPABASE_ANON_KEY=your_actual_supabase_anon_key
+```
+
+### 3. API Keys Configuration
+
+#### Android
+Open `android/app/src/main/AndroidManifest.xml` and replace `YOUR_GOOGLE_MAPS_API_KEY` with your actual Google Maps API key:
+```xml
+<meta-data
+    android:name="com.google.android.geo.API_KEY"
+    android:value="YOUR_GOOGLE_MAPS_API_KEY"/>
+```
+
+#### iOS
+Open `ios/Runner/AppDelegate.swift` and replace `YOUR_GOOGLE_MAPS_API_KEY` with your actual Google Maps API key:
+```swift
+GMSServices.provideAPIKey("YOUR_GOOGLE_MAPS_API_KEY")
+```
+
+### 4. Run the App
+Install dependencies and run the application:
+```bash
+flutter pub get
+flutter run
+```
+
 ## Core Technologies
 
 - **Frontend**: Flutter
