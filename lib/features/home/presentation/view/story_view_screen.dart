@@ -29,6 +29,7 @@ class _StoryViewScreenState extends State<StoryViewScreen>
   late AnimationController _progressController;
   VideoPlayerController? _videoPlayerController;
   ChewieController? _chewieController;
+  double _dragDistance = 0; // Track vertical drag distance
 
   @override
   void initState() {
@@ -130,6 +131,7 @@ class _StoryViewScreenState extends State<StoryViewScreen>
   }
 
   Future<void> _showManagementSheet(StoryModel story) async {
+    debugPrint('DEBUG: Showing Management Sheet for story: ${story.id}');
     _progressController.stop();
     _chewieController?.pause();
 
@@ -160,20 +162,34 @@ class _StoryViewScreenState extends State<StoryViewScreen>
           backgroundColor: Colors.black,
           body: GestureDetector(
             behavior: HitTestBehavior.opaque,
+            onVerticalDragUpdate: (details) {
+              _dragDistance -= details.primaryDelta ?? 0;
+            },
             onVerticalDragEnd: (details) {
               final velocity = details.primaryVelocity ?? 0;
-              if (velocity < -200) {
-                // Swipe Up
-                final currentStory =
-                    widget.userStory.stories[state.currentIndex];
-                final currentUserId =
-                    Supabase.instance.client.auth.currentUser?.id;
+              final currentStory = widget.userStory.stories[state.currentIndex];
+              final currentUserId =
+                  Supabase.instance.client.auth.currentUser?.id;
+
+              debugPrint(
+                'DEBUG: Swipe End - Velocity: $velocity, Distance: $_dragDistance',
+              );
+              debugPrint(
+                'DEBUG: Ownership Check - Story User: ${currentStory.userId}, Current User: $currentUserId',
+              );
+
+              if (velocity < -200 || _dragDistance > 80) {
+                // Swipe Up triggered either by speed or distance
                 if (currentStory.userId == currentUserId) {
                   _showManagementSheet(currentStory);
+                } else {
+                  debugPrint('DEBUG: Swipe Up ignored - Not the owner');
                 }
               }
+              _dragDistance = 0; // Reset after drag ends
             },
             onTapUp: (details) {
+              _dragDistance = 0; // Reset distance on tap
               final screenWidth = MediaQuery.of(context).size.width;
               if (details.globalPosition.dx < screenWidth / 2) {
                 _onTapLeft();

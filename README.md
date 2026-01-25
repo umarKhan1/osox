@@ -60,9 +60,47 @@ Users can share ephemeral content that expires after 24 hours. The story viewer 
 ### Content Engagement
 The platform supports high-quality photo and video posts. Engagement features include real-time likes, threaded comments, and location tagging.
 
+## Visual Reference
+
+Below are visual representations of the application across various screens.
+
+### Onboarding and Authentication
+| Onboarding | Authentication |
+|---|---|
+| ![Onboarding](assets/images/images/Onboarding.png) | ![Authentication](assets/images/images/AuthScreen.png) |
+
+### Main Experience
+| Main Screen | Home Details |
+|---|---|
+| ![Main Screen](assets/images/images/main%20Screen.png) | ![Home Screen](assets/images/images/Home%20Screen.png) |
+
+### Engagement and Content
+| Stories | Messaging | Posts |
+|---|---|---|
+| ![Stories](assets/images/images/Stories%20Screen.png) | ![Messages](assets/images/images/Messages.png) | ![Post Screen](assets/images/images/Post%20Screen.png) |
+
+### Discovery and Community
+| Comments | Search | Profile |
+|---|---|---|
+| ![Comments](assets/images/images/Comments.png) | ![Search](assets/images/images/search%20screen.png) | ![Profile](assets/images/images/profile%20Screen.png) |
+
+### Connections
+![Following and Followers](assets/images/images/Following%20and%20Followers.png)
+
 ## Implementation Details
 
 - **Video Processing**: Utilizes a dedicated video service for compression before upload, ensuring optimal load times.
 - **Lazy Loading**: Implements range-based pagination for feeds and lists.
 - **Optimistic Updates**: Provides immediate UI feedback for likes and deletions for a responsive feel.
 - **Safety**: Uses Git and automated workflows for consistent builds and code quality checks.
+
+---
+
+## Open Source and Collaboration
+
+OSOX is an open-source project dedicated to demonstrating modern Flutter and Supabase integration patterns. Contributions, suggestions, and feedback are welcome.
+
+### Author
+
+**Muhammad Omar**
+LinkedIn: [muhammad-omar-0335](https://www.linkedin.com/in/muhammad-omar-0335/)
