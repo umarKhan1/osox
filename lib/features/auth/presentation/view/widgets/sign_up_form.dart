@@ -70,8 +70,7 @@ class _SignUpFormState extends State<SignUpForm> {
             SizedBox(height: 24.h),
             BlocBuilder<SignUpCubit, SignUpState>(
               builder: (context, state) {
-                final initial = state is SignUpInitial ? state : null;
-                final isPasswordVisible = initial?.isPasswordVisible ?? false;
+                final isPasswordVisible = state.isPasswordVisible;
                 return CustomTextField(
                   label: AppStrings.password,
                   hintText: AppStrings.passwordHint,
@@ -97,9 +96,7 @@ class _SignUpFormState extends State<SignUpForm> {
             SizedBox(height: 24.h),
             BlocBuilder<SignUpCubit, SignUpState>(
               builder: (context, state) {
-                final initial = state is SignUpInitial ? state : null;
-                final isConfirmPasswordVisible =
-                    initial?.isConfirmPasswordVisible ?? false;
+                final isConfirmPasswordVisible = state.isConfirmPasswordVisible;
                 return CustomTextField(
                   label: AppStrings.confirmPassword,
                   hintText: AppStrings.confirmPasswordHint,

@@ -19,13 +19,30 @@ class HomeLoading extends HomeState {
 }
 
 class HomeLoaded extends HomeState {
-  const HomeLoaded({required this.stories, required this.posts});
+  const HomeLoaded({
+    required this.stories,
+    required this.posts,
+    this.isUploading = false,
+  });
 
   final List<UserStoriesModel> stories;
   final List<PostModel> posts;
+  final bool isUploading;
+
+  HomeLoaded copyWith({
+    List<UserStoriesModel>? stories,
+    List<PostModel>? posts,
+    bool? isUploading,
+  }) {
+    return HomeLoaded(
+      stories: stories ?? this.stories,
+      posts: posts ?? this.posts,
+      isUploading: isUploading ?? this.isUploading,
+    );
+  }
 
   @override
-  List<Object?> get props => [stories, posts];
+  List<Object?> get props => [stories, posts, isUploading];
 }
 
 class HomeError extends HomeState {

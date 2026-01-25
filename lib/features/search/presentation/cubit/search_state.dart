@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:osox/features/posts/domain/models/post_model.dart';
+import 'package:osox/features/search/domain/models/user_search_result.dart';
 
 abstract class SearchState extends Equatable {
   const SearchState();
@@ -18,6 +19,14 @@ class SearchLoaded extends SearchState {
 
   @override
   List<Object?> get props => [posts];
+}
+
+class SearchUsersLoaded extends SearchState {
+  const SearchUsersLoaded({required this.users});
+  final List<UserSearchResult> users;
+
+  @override
+  List<Object?> get props => [users];
 }
 
 class SearchError extends SearchState {

@@ -5,9 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:osox/core/service_locator.dart';
 import 'package:osox/features/activity/presentation/view/activity_screen.dart';
 import 'package:osox/features/home/presentation/view/home_screen.dart';
-import 'package:osox/features/posts/data/repositories/post_repository.dart';
-import 'package:osox/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:osox/features/posts/domain/repositories/post_repository.dart';
 import 'package:osox/features/profile/presentation/view/profile_screen.dart';
+import 'package:osox/features/search/domain/repositories/search_repository.dart';
 import 'package:osox/features/search/presentation/cubit/search_cubit.dart';
 import 'package:osox/features/search/presentation/view/search_screen.dart';
 
@@ -24,15 +24,13 @@ class _MainScreenState extends State<MainScreen> {
   late final List<Widget> _screens = [
     const HomeScreen(),
     BlocProvider(
-      create: (context) => SearchCubit(getIt<PostRepository>()),
+      create: (context) =>
+          SearchCubit(getIt<IPostRepository>(), getIt<ISearchRepository>()),
       child: const SearchScreen(),
     ),
     const SizedBox.shrink(), // Placeholder for the 'Add' tab
     const ActivityScreen(),
-    BlocProvider(
-      create: (context) => ProfileCubit(getIt<PostRepository>()),
-      child: const ProfileScreen(),
-    ),
+    const ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -10,7 +9,6 @@ import 'package:osox/core/constants/app_colors.dart';
 import 'package:osox/features/posts/presentation/cubit/media_picker_cubit.dart';
 import 'package:osox/features/posts/presentation/cubit/media_picker_state.dart';
 import 'package:photo_manager/photo_manager.dart';
-import 'package:video_player/video_player.dart';
 
 class MediaSelectionScreen extends StatefulWidget {
   const MediaSelectionScreen({super.key});
@@ -21,8 +19,6 @@ class MediaSelectionScreen extends StatefulWidget {
 
 class _MediaSelectionScreenState extends State<MediaSelectionScreen> {
   final PageController _pageController = PageController();
-  final Map<String, VideoPlayerController> _videoControllers =
-      {}; // Changed to use asset ID
   int _currentPage = 0;
 
   @override
@@ -32,29 +28,11 @@ class _MediaSelectionScreenState extends State<MediaSelectionScreen> {
     _pageController.addListener(_onPageChanged);
   }
 
-  void _cleanupVideoControllers() {
-    // Pause and dispose all video controllers
-    for (final controller in _videoControllers.values) {
-      if (controller.value.isPlaying) {
-        controller.pause();
-      }
-      controller.dispose();
-    }
-    _videoControllers.clear();
-    _currentPage = 0;
-  }
-
   void _onPageChanged() {
     final page = _pageController.page?.round() ?? 0;
     if (page != _currentPage) {
-      // Pause all videos
-      for (final controller in _videoControllers.values) {
-        if (controller.value.isPlaying) {
-          controller.pause();
-        }
-      }
       _currentPage = page;
-      setState(() {}); // Rebuild to play new page's video
+      setState(() {});
     }
   }
 
@@ -63,28 +41,7 @@ class _MediaSelectionScreenState extends State<MediaSelectionScreen> {
     _pageController
       ..removeListener(_onPageChanged)
       ..dispose();
-    // Pause and dispose all video controllers
-    for (final controller in _videoControllers.values) {
-      if (controller.value.isPlaying) {
-        controller.pause();
-      }
-      controller.dispose();
-    }
-    _videoControllers.clear();
     super.dispose();
-  }
-
-  Future<VideoPlayerController> _getVideoController(AssetEntity asset) async {
-    if (_videoControllers.containsKey(asset.id)) {
-      return _videoControllers[asset.id]!;
-    }
-
-    final file = await asset.file;
-    final controller = VideoPlayerController.file(File(file!.path));
-    await controller.initialize();
-    await controller.setLooping(true);
-    _videoControllers[asset.id] = controller;
-    return controller;
   }
 
   @override
@@ -120,13 +77,6 @@ class _MediaSelectionScreenState extends State<MediaSelectionScreen> {
               return TextButton(
                 onPressed: hasMedia
                     ? () async {
-                        // Stop all playing videos before navigating
-                        for (final controller in _videoControllers.values) {
-                          if (controller.value.isPlaying) {
-                            await controller.pause();
-                          }
-                        }
-
                         final mediaState = state;
                         // Convert AssetEntity to XFile with error handling
                         try {
@@ -194,24 +144,38 @@ class _MediaSelectionScreenState extends State<MediaSelectionScreen> {
                           final asset = state.mediaAssets[assetIndex];
 
                           if (asset.type == AssetType.video) {
-                            return FutureBuilder<VideoPlayerController>(
-                              future: _getVideoController(asset),
+                            return FutureBuilder<Uint8List?>(
+                              future: asset.thumbnailDataWithSize(
+                                const ThumbnailSize(800, 800),
+                              ),
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
-                                  final controller = snapshot.data!;
-                                  // Only play if this is the current page
-                                  if (pageIndex == _currentPage &&
-                                      !controller.value.isPlaying) {
-                                    controller.play();
-                                  } else if (pageIndex != _currentPage &&
-                                      controller.value.isPlaying) {
-                                    controller.pause();
-                                  }
-                                  return Center(
-                                    child: AspectRatio(
-                                      aspectRatio: controller.value.aspectRatio,
-                                      child: VideoPlayer(controller),
-                                    ),
+                                  return Stack(
+                                    fit: StackFit.expand,
+                                    children: [
+                                      Center(
+                                        child: Image.memory(
+                                          snapshot.data!,
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                      Center(
+                                        child: Container(
+                                          padding: const EdgeInsets.all(16),
+                                          decoration: BoxDecoration(
+                                            color: Colors.black.withValues(
+                                              alpha: 0.5,
+                                            ),
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: const Icon(
+                                            Icons.play_arrow,
+                                            color: Colors.white,
+                                            size: 48,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   );
                                 }
                                 return const Center(
@@ -306,7 +270,6 @@ class _MediaSelectionScreenState extends State<MediaSelectionScreen> {
                         'Library',
                         currentType == MediaType.all,
                         () {
-                          _cleanupVideoControllers();
                           context.read<MediaPickerCubit>().changeMediaType(
                             MediaType.all,
                           );
@@ -319,7 +282,6 @@ class _MediaSelectionScreenState extends State<MediaSelectionScreen> {
                         'Photo',
                         currentType == MediaType.image,
                         () {
-                          _cleanupVideoControllers();
                           context.read<MediaPickerCubit>().changeMediaType(
                             MediaType.image,
                           );
@@ -332,7 +294,6 @@ class _MediaSelectionScreenState extends State<MediaSelectionScreen> {
                         'Video',
                         currentType == MediaType.video,
                         () {
-                          _cleanupVideoControllers();
                           context.read<MediaPickerCubit>().changeMediaType(
                             MediaType.video,
                           );

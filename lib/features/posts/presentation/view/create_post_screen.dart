@@ -130,11 +130,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             return TextButton(
               onPressed: state is CreatePostEditing
                   ? () {
-                      // TODO(dev): Get actual user data from auth
                       context.read<CreatePostCubit>().submitPost(
                         userId: 'user_1',
                         userName: 'Current User',
-                        userProfileUrl: 'https://via.placeholder.com/150',
+                        userProfileUrl:
+                            'https://ui-avatars.com/api/?name=User&background=random',
                       );
                     }
                   : null,

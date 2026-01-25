@@ -55,8 +55,7 @@ class _LoginFormState extends State<LoginForm> {
             SizedBox(height: 28.h),
             BlocBuilder<LoginCubit, LoginState>(
               builder: (context, state) {
-                final initial = state is LoginInitial ? state : null;
-                final isPasswordVisible = initial?.isPasswordVisible ?? false;
+                final isPasswordVisible = state.isPasswordVisible;
                 return CustomTextField(
                   label: AppStrings.password,
                   hintText: AppStrings.passwordHint,
@@ -84,8 +83,7 @@ class _LoginFormState extends State<LoginForm> {
                   children: [
                     BlocBuilder<LoginCubit, LoginState>(
                       builder: (context, state) {
-                        final initial = state is LoginInitial ? state : null;
-                        final rememberMe = initial?.rememberMe ?? false;
+                        final rememberMe = state.rememberMe;
                         return SizedBox(
                           width: 24.w,
                           height: 24.w,

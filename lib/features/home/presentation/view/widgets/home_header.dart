@@ -9,8 +9,11 @@ class HomeHeader extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final iconColor = isDark ? Colors.white : Colors.black;
+
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: isDark ? Colors.black : Colors.white,
       elevation: 0,
       centerTitle: true,
       title: Text(
@@ -18,26 +21,26 @@ class HomeHeader extends StatelessWidget implements PreferredSizeWidget {
         style: TextStyle(
           fontSize: 24.sp,
           fontWeight: FontWeight.bold,
-          color: Colors.black,
+          color: iconColor,
           letterSpacing: -1,
         ),
       ),
       actions: [
         IconButton(
-          icon: Icon(Icons.add_box_outlined, color: Colors.black, size: 24.sp),
+          icon: Icon(Icons.add_box_outlined, color: iconColor, size: 24.sp),
           onPressed: () => context.push('/media-selection'),
         ),
         IconButton(
-          icon: Icon(FontAwesomeIcons.camera, color: Colors.black, size: 22.sp),
+          icon: Icon(FontAwesomeIcons.camera, color: iconColor, size: 22.sp),
           onPressed: () => context.push('/camera'),
         ),
         IconButton(
           icon: Icon(
             FontAwesomeIcons.solidPaperPlane,
-            color: Colors.black,
+            color: iconColor,
             size: 22.sp,
           ),
-          onPressed: () {},
+          onPressed: () => context.push('/messages'),
         ),
         SizedBox(width: 8.w),
       ],

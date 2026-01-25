@@ -21,23 +21,23 @@ class LocationPickerCubit extends Cubit<LocationPickerState> {
         }
       }
 
-      // Get current position with timeout
+      // Get current position with strict timeout to prevent "stuck" UI
       final position =
           await Geolocator.getCurrentPosition(
             // ignore: deprecated_member_use
-            desiredAccuracy: LocationAccuracy.high,
+            desiredAccuracy:
+                LocationAccuracy.low, // Lower accuracy for faster response
             // ignore: deprecated_member_use
-            timeLimit: const Duration(seconds: 10),
+            timeLimit: const Duration(seconds: 5),
           ).timeout(
-            const Duration(seconds: 15),
+            const Duration(seconds: 10),
             onTimeout: () async {
-              // Fallback to last known position
+              // Fallback logic
               final lastPosition = await Geolocator.getLastKnownPosition();
-              if (lastPosition != null) {
-                return lastPosition;
-              }
-              // Default to a location if all else fails
-              throw Exception('Unable to get location. Please try again.');
+              if (lastPosition != null) return lastPosition;
+              throw Exception(
+                'Location request timed out. Please check your GPS/Network.',
+              );
             },
           );
 

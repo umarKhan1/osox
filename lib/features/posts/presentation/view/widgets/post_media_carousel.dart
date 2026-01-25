@@ -1,7 +1,7 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:osox/features/posts/domain/models/post_model.dart';
+import 'package:osox/features/posts/presentation/view/widgets/post_media_widget.dart';
 
 class PostMediaCarousel extends StatefulWidget {
   const PostMediaCarousel({required this.post, super.key});
@@ -20,7 +20,8 @@ class _PostMediaCarouselState extends State<PostMediaCarousel> {
     return Stack(
       children: [
         AspectRatio(
-          aspectRatio: 1, // Instagram standard square aspect ratio
+          aspectRatio: 0.8, // 4:5 Portrait aspect ratio (standard for
+          // Instagram-style feeds)
           child: PageView.builder(
             itemCount: widget.post.mediaPaths.length,
             onPageChanged: (index) {
@@ -30,23 +31,7 @@ class _PostMediaCarouselState extends State<PostMediaCarousel> {
             },
             itemBuilder: (context, index) {
               final path = widget.post.mediaPaths[index];
-              final isNetwork = path.startsWith('http');
-
-              return isNetwork
-                  ? Image.network(
-                      path,
-                      fit: BoxFit.cover,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return Container(
-                          color: Colors.grey[200],
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      },
-                    )
-                  : Image.file(File(path), fit: BoxFit.cover);
+              return PostMediaWidget(path: path);
             },
           ),
         ),

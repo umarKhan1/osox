@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
+import 'package:osox/features/profile/presentation/view/profile_screen.dart';
 import 'package:osox/features/search/presentation/cubit/search_cubit.dart';
 import 'package:osox/features/search/presentation/cubit/search_state.dart';
 import 'package:osox/features/search/presentation/view/widgets/explore_tile.dart';
+import 'package:osox/features/search/presentation/view/widgets/user_search_tile.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -15,10 +17,18 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  final TextEditingController _searchController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
     context.read<SearchCubit>().loadExploreFeed();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -34,43 +44,38 @@ class _SearchScreenState extends State<SearchScreen> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 38.h,
-                        decoration: BoxDecoration(
-                          color: isDark ? Colors.grey[900] : Colors.grey[200],
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                        child: Row(
-                          children: [
-                            SizedBox(width: 12.w),
-                            Icon(Icons.search, color: Colors.grey, size: 20.sp),
-                            SizedBox(width: 10.w),
-                            Text(
-                              'Search',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16.sp,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 12.w),
-                    Icon(
-                      Icons.qr_code_scanner_outlined,
+                child: Container(
+                  height: 38.h,
+                  decoration: BoxDecoration(
+                    color: isDark ? Colors.grey[900] : Colors.grey[200],
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                  child: TextField(
+                    controller: _searchController,
+                    onChanged: (query) {
+                      context.read<SearchCubit>().searchUsers(query);
+                    },
+                    style: TextStyle(
                       color: isDark ? Colors.white : Colors.black,
-                      size: 24.sp,
+                      fontSize: 16.sp,
                     ),
-                  ],
+                    decoration: InputDecoration(
+                      hintText: 'Search',
+                      hintStyle: TextStyle(color: Colors.grey, fontSize: 16.sp),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: Colors.grey,
+                        size: 20.sp,
+                      ),
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(vertical: 8.h),
+                    ),
+                  ),
                 ),
               ),
             ),
 
-            // Mosaic Grid
+            // Content based on state
             BlocBuilder<SearchCubit, SearchState>(
               builder: (context, state) {
                 if (state is SearchLoading) {
@@ -79,6 +84,39 @@ class _SearchScreenState extends State<SearchScreen> {
                   );
                 }
 
+                // User search results
+                if (state is SearchUsersLoaded) {
+                  if (state.users.isEmpty) {
+                    return SliverFillRemaining(
+                      child: Center(
+                        child: Text(
+                          'No users found',
+                          style: TextStyle(color: Colors.grey, fontSize: 16.sp),
+                        ),
+                      ),
+                    );
+                  }
+
+                  return SliverList(
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      final user = state.users[index];
+                      return UserSearchTile(
+                        user: user,
+                        onTap: () {
+                          Navigator.push<void>(
+                            context,
+                            MaterialPageRoute<void>(
+                              builder: (_) =>
+                                  ProfileScreen.route(userId: user.id),
+                            ),
+                          );
+                        },
+                      );
+                    }, childCount: state.users.length),
+                  );
+                }
+
+                // Explore feed (posts grid)
                 if (state is SearchLoaded) {
                   return SliverPadding(
                     padding: EdgeInsets.symmetric(horizontal: 1.w),
@@ -92,8 +130,13 @@ class _SearchScreenState extends State<SearchScreen> {
                           aspectRatio: _getAspectRatio(index),
                           child: ExploreTile(
                             post: post,
-                            onTap: () =>
-                                context.push('/post-detail', extra: post),
+                            index: index,
+                            onTap: () async {
+                              await context.push('/post-detail', extra: post);
+                              if (context.mounted) {
+                                context.read<SearchCubit>().loadExploreFeed();
+                              }
+                            },
                           ),
                         );
                       },

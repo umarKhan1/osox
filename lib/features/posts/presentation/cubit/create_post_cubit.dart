@@ -1,15 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:osox/features/posts/data/repositories/post_repository.dart';
 import 'package:osox/features/posts/domain/models/location_model.dart';
 import 'package:osox/features/posts/domain/models/post_model.dart';
+import 'package:osox/features/posts/domain/repositories/post_repository.dart';
 import 'package:osox/features/posts/presentation/cubit/create_post_state.dart';
 
 class CreatePostCubit extends Cubit<CreatePostState> {
   CreatePostCubit(this._repository, List<XFile> selectedMedia)
     : super(CreatePostEditing(selectedMedia: selectedMedia, caption: ''));
 
-  final PostRepository _repository;
+  final IPostRepository _repository;
 
   void updateCaption(String caption) {
     final currentState = state;
@@ -59,7 +59,7 @@ class CreatePostCubit extends Cubit<CreatePostState> {
         createdAt: DateTime.now(),
       );
 
-      await _repository.createPost(post);
+      await _repository.createPost(post, post.mediaPaths);
       if (!isClosed) emit(CreatePostSuccess());
     } catch (e) {
       if (!isClosed) emit(CreatePostError(e.toString()));

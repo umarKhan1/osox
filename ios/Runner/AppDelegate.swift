@@ -8,8 +8,10 @@ import GoogleMaps
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    // Google Maps API key is configured in Dart code (lib/core/constants/api_keys.dart)
-    // The key is passed from Flutter when the map is initialized
+    // IMPORTANT: Replace with your actual Google Maps API key
+    // Do not commit your real key to version control for open-source safety.
+    GMSServices.provideAPIKey("AIzaSyCC2ZpWTa2HUPEADVMu8Lg_c1YvWUGLuNE")
+    
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }

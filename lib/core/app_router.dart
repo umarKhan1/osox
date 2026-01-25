@@ -5,17 +5,20 @@ import 'package:image_picker/image_picker.dart';
 import 'package:osox/core/service_locator.dart';
 import 'package:osox/features/auth/presentation/view/login_screen.dart';
 import 'package:osox/features/auth/presentation/view/sign_up_screen.dart';
+import 'package:osox/features/chat/presentation/view/chat_list_screen.dart';
+import 'package:osox/features/chat/presentation/view/chat_screen.dart';
 import 'package:osox/features/home/presentation/cubit/camera_state.dart';
 import 'package:osox/features/home/presentation/view/camera_preview_screen.dart';
 import 'package:osox/features/home/presentation/view/camera_screen.dart';
 import 'package:osox/features/main/presentation/view/main_screen.dart';
 import 'package:osox/features/onboarding/presentation/view/onboarding_screen.dart';
-import 'package:osox/features/posts/data/repositories/post_repository.dart';
 import 'package:osox/features/posts/domain/models/post_model.dart';
+import 'package:osox/features/posts/domain/repositories/post_repository.dart';
 import 'package:osox/features/posts/presentation/cubit/create_post_cubit.dart';
 import 'package:osox/features/posts/presentation/cubit/location_picker_cubit.dart';
 import 'package:osox/features/posts/presentation/cubit/media_picker_cubit.dart';
 import 'package:osox/features/posts/presentation/view/create_post_screen.dart';
+import 'package:osox/features/posts/presentation/view/edit_post_screen.dart';
 import 'package:osox/features/posts/presentation/view/location_picker_screen.dart';
 import 'package:osox/features/posts/presentation/view/media_selection_screen.dart';
 import 'package:osox/features/posts/presentation/view/post_detail_screen.dart';
@@ -70,7 +73,7 @@ class AppRouter {
           }
           return BlocProvider(
             create: (context) =>
-                CreatePostCubit(getIt<PostRepository>(), selectedMedia),
+                CreatePostCubit(getIt<IPostRepository>(), selectedMedia),
             child: CreatePostScreen(selectedMedia: selectedMedia),
           );
         },
@@ -87,6 +90,29 @@ class AppRouter {
         builder: (context, state) {
           final post = state.extra! as PostModel;
           return PostDetailScreen(post: post);
+        },
+      ),
+      GoRoute(
+        path: '/edit-post',
+        builder: (context, state) {
+          final post = state.extra! as PostModel;
+          return EditPostScreen(post: post);
+        },
+      ),
+      GoRoute(
+        path: '/messages',
+        builder: (context, state) => const ChatListScreen(),
+      ),
+      GoRoute(
+        path: '/chat/:userId',
+        builder: (context, state) {
+          final userId = state.pathParameters['userId']!;
+          final extra = state.extra as Map<String, dynamic>?;
+          return ChatScreen(
+            otherUserId: userId,
+            otherUserName: extra?['name'] as String? ?? 'User',
+            otherUserAvatar: extra?['avatar'] as String? ?? '',
+          );
         },
       ),
     ],

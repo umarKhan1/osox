@@ -1,35 +1,55 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:osox/features/auth/domain/repositories/auth_repository.dart';
 import 'package:osox/features/auth/presentation/cubit/login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  LoginCubit() : super(const LoginInitial());
+  LoginCubit(this._authRepository) : super(const LoginInitial());
+
+  final IAuthRepository _authRepository;
 
   void togglePasswordVisibility() {
-    if (state is LoginInitial) {
-      final currentState = state as LoginInitial;
-      emit(
-        currentState.copyWith(
-          isPasswordVisible: !currentState.isPasswordVisible,
-        ),
-      );
-    }
+    final newState = state is LoginFailure
+        ? LoginInitial(
+            isPasswordVisible: !state.isPasswordVisible,
+            rememberMe: state.rememberMe,
+          )
+        : state.copyWith(isPasswordVisible: !state.isPasswordVisible);
+    emit(newState);
   }
 
   void toggleRememberMe({required bool value}) {
-    if (state is LoginInitial) {
-      final currentState = state as LoginInitial;
-      emit(currentState.copyWith(rememberMe: value));
-    }
+    final newState = state is LoginFailure
+        ? LoginInitial(
+            isPasswordVisible: state.isPasswordVisible,
+            rememberMe: value,
+          )
+        : state.copyWith(rememberMe: value);
+    emit(newState);
   }
 
   Future<void> login(String email, String password) async {
-    emit(const LoginLoading());
+    emit(
+      LoginLoading(
+        isPasswordVisible: state.isPasswordVisible,
+        rememberMe: state.rememberMe,
+      ),
+    );
     try {
-      // Simulating API call
-      await Future<void>.delayed(const Duration(seconds: 2));
-      emit(const LoginSuccess());
+      await _authRepository.signIn(email: email, password: password);
+      emit(
+        LoginSuccess(
+          isPasswordVisible: state.isPasswordVisible,
+          rememberMe: state.rememberMe,
+        ),
+      );
     } catch (e) {
-      emit(LoginFailure(e.toString()));
+      emit(
+        LoginFailure(
+          e.toString(),
+          isPasswordVisible: state.isPasswordVisible,
+          rememberMe: state.rememberMe,
+        ),
+      );
     }
   }
 }

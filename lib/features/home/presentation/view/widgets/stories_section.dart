@@ -20,6 +20,8 @@ class StoriesSection extends StatelessWidget {
         }
 
         if (state is HomeLoaded) {
+          if (state.stories.isEmpty) return const SizedBox.shrink();
+
           return Container(
             height: 110.h,
             decoration: BoxDecoration(
@@ -38,6 +40,7 @@ class StoriesSection extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute<void>(
+                        settings: const RouteSettings(name: 'story_view'),
                         builder: (context) => BlocProvider(
                           create: (context) => StoryViewCubit(),
                           child: StoryViewScreen(

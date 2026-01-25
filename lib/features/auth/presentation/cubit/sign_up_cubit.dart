@@ -1,39 +1,61 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:osox/features/auth/domain/repositories/auth_repository.dart';
 import 'package:osox/features/auth/presentation/cubit/sign_up_state.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
-  SignUpCubit() : super(const SignUpInitial());
+  SignUpCubit(this._authRepository) : super(const SignUpInitial());
+
+  final IAuthRepository _authRepository;
 
   void togglePasswordVisibility() {
-    if (state is SignUpInitial) {
-      final currentState = state as SignUpInitial;
-      emit(
-        currentState.copyWith(
-          isPasswordVisible: !currentState.isPasswordVisible,
-        ),
-      );
-    }
+    final newState = state is SignUpFailure
+        ? SignUpInitial(
+            isPasswordVisible: !state.isPasswordVisible,
+            isConfirmPasswordVisible: state.isConfirmPasswordVisible,
+          )
+        : state.copyWith(isPasswordVisible: !state.isPasswordVisible);
+    emit(newState);
   }
 
   void toggleConfirmPasswordVisibility() {
-    if (state is SignUpInitial) {
-      final currentState = state as SignUpInitial;
-      emit(
-        currentState.copyWith(
-          isConfirmPasswordVisible: !currentState.isConfirmPasswordVisible,
-        ),
-      );
-    }
+    final newState = state is SignUpFailure
+        ? SignUpInitial(
+            isPasswordVisible: state.isPasswordVisible,
+            isConfirmPasswordVisible: !state.isConfirmPasswordVisible,
+          )
+        : state.copyWith(
+            isConfirmPasswordVisible: !state.isConfirmPasswordVisible,
+          );
+    emit(newState);
   }
 
   Future<void> signUp(String fullName, String email, String password) async {
-    emit(const SignUpLoading());
+    emit(
+      SignUpLoading(
+        isPasswordVisible: state.isPasswordVisible,
+        isConfirmPasswordVisible: state.isConfirmPasswordVisible,
+      ),
+    );
     try {
-      // Simulate API call
-      await Future<void>.delayed(const Duration(seconds: 2));
-      emit(const SignUpSuccess());
+      await _authRepository.signUp(
+        fullName: fullName,
+        email: email,
+        password: password,
+      );
+      emit(
+        SignUpSuccess(
+          isPasswordVisible: state.isPasswordVisible,
+          isConfirmPasswordVisible: state.isConfirmPasswordVisible,
+        ),
+      );
     } catch (e) {
-      emit(SignUpFailure(e.toString()));
+      emit(
+        SignUpFailure(
+          e.toString(),
+          isPasswordVisible: state.isPasswordVisible,
+          isConfirmPasswordVisible: state.isConfirmPasswordVisible,
+        ),
+      );
     }
   }
 }
